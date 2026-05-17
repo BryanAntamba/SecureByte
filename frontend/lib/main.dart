@@ -1,29 +1,44 @@
+// Importa las utilidades de codificación y decodificación de texto.
 import 'dart:convert';
 
+// Importa los componentes visuales y de diseño de Flutter.
 import 'package:flutter/material.dart';
+// Importa servicios de plataforma, como el portapapeles.
 import 'package:flutter/services.dart';
 
+// Función principal que inicia la aplicación Flutter.
 void main() {
+  // Ejecuta la aplicación usando el widget raíz MyApp.
   runApp(const MyApp());
 }
 
+// Widget raíz inmutable de la aplicación.
 class MyApp extends StatelessWidget {
+  // Constructor con la clave del widget para optimizaciones de Flutter.
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Construye el widget MaterialApp con tema y pantalla inicial.
     return MaterialApp(
+      // Oculta la etiqueta de depuración en modo debug.
       debugShowCheckedModeBanner: false,
+      // Título de la aplicación, usado por el sistema operativo.
       title: 'SecureByte',
+      // Define el tema visual de la aplicación.
       theme: ThemeData(
+        // Crea un esquema de color basado en un color semilla.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        // Activa Material Design 3.
         useMaterial3: true,
       ),
+      // Establece la pantalla principal al iniciar.
       home: const SplashScreen(),
     );
   }
 }
 
+// Widget con estado para la pantalla de bienvenida.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -31,25 +46,32 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
+// Estado asociado a SplashScreen, con animaciones.
 class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  // Controlador de animación usado para las transiciones.
   late final AnimationController _controller;
+  // Animación adicional para el texto.
   late final Animation<double> _textAnimation;
 
+  // Texto que se animará en la pantalla de carga.
   static const String _titleText = 'SecureByte';
 
   @override
   void initState() {
     super.initState();
+    // Inicializa el controlador de animación con duración.
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 3200),
     )..forward();
 
+    // Define la animación del texto con un intervalo específico.
     _textAnimation = CurvedAnimation(
       parent: _controller,
       curve: const Interval(0.65, 1.0, curve: Curves.easeOut),
     );
 
+    // Escucha el estado de la animación para navegar a HomeScreen al completar.
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed && mounted) {
         Navigator.of(context).pushReplacement(
@@ -61,10 +83,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   void dispose() {
+    // Libera recursos del controlador de animación.
     _controller.dispose();
     super.dispose();
   }
 
+  // Construye una onda animada para el fondo del splash.
   Widget _buildWave(double delay) {
     final animation = CurvedAnimation(
       parent: _controller,
@@ -101,6 +125,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     );
   }
 
+  // Calcula el texto que se muestra según el progreso de la animación.
   String get _animatedTitle {
     final int count = (_textAnimation.value * _titleText.length).clamp(0, _titleText.length).toInt();
     return _titleText.substring(0, count);
@@ -170,6 +195,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 }
 
+// Pantalla principal donde se muestran mensajes y operaciones.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -178,18 +204,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Lista de mensajes capturados que el usuario puede seleccionar.
   final List<String> _capturedMessages = [
     'Reunión a las 7pm',
     'Clave secreta 123',
     'Envía el paquete hoy',
   ];
+  // Índice del mensaje seleccionado, -1 significa ninguno.
   int _selectedMessageIndex = -1;
 
+  // Obtiene el mensaje seleccionado si hay alguno.
   String get _selectedMessage =>
       _selectedMessageIndex >= 0 ? _capturedMessages[_selectedMessageIndex] : '';
 
+  // Indica si hay un mensaje seleccionado.
   bool get _hasSelectedMessage => _selectedMessageIndex >= 0;
 
+  // Muestra el diálogo para encriptar un mensaje.
   void _showEncryptDialog() {
     final TextEditingController controller = TextEditingController(text: _selectedMessage);
     String result = '';
@@ -290,6 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Muestra el diálogo para desencriptar un mensaje en Base64.
   void _showDecryptDialog() {
     final TextEditingController controller = TextEditingController();
     String result = '';
@@ -391,6 +423,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Estilo reutilizable para los botones de acción.
   ButtonStyle get _actionButtonStyle => ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
         foregroundColor: Colors.indigo,
