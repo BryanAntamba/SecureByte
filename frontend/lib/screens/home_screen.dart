@@ -231,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _hasSelectedMessage
-                    ? () => showDecryptDialog(context, _selectedMessage)
+                    ? () => showDecryptDialog(context, '')
                     : null,
                 style: _actionButtonStyle,
                 child: const Text(

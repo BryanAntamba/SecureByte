@@ -35,7 +35,7 @@ void showDecryptDialog(BuildContext context, String initialText) {
                   maxLines: 4,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Texto cifrado',
+                    hintText: 'Pegue aquí el mensaje a desencriptar',
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -123,7 +123,7 @@ void showDecryptDialog(BuildContext context, String initialText) {
                 const SizedBox(height: 8),
                 SelectableText(
                   result.isEmpty
-                      ? 'Aquí aparecerá el mensaje desencriptado'
+                      ? 'Coloque el mensaje cifrado para desencriptar'
                       : result,
                   style: const TextStyle(fontSize: 14, color: Colors.black87),
                 ),
